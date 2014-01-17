@@ -3,9 +3,11 @@
  */
 
 'use strict';
-angular.module('mq-emitter', [])
+angular.module('mq-emitter', [
+  'mq-utils',
+])
 
-.factory('mqEmitter', function() {
+.factory('mqEmitter', function(delegate) {
 
   function hasListener(listeners, signal, handler) {
     return listeners[signal] ?
@@ -14,6 +16,16 @@ angular.module('mq-emitter', [])
   }
 
   return {
+
+    implement: function(target) {
+      var emitter = this.new();
+      target.emitter = emitter;
+      target.on = delegate('emitter', 'on');
+      target.off = delegate('emitter', 'off');
+      target.once = delegate('emitter', 'once');
+      return target;
+    },
+
     new: function() {
       return Object.create(this).init();
     },
@@ -21,6 +33,13 @@ angular.module('mq-emitter', [])
     init: function() {
       this._listeners = Object.create(null);
       return this;
+    },
+
+    bind: function(target) {
+      target.on = this.on.bind(this);
+      target.off = this.off.bind(this);
+      target.once = this.once.bind(this);
+      return target;
     },
 
     listenersCount: function(signal) {
@@ -37,7 +56,7 @@ angular.module('mq-emitter', [])
       if (hasListener(list, signal, listener))
         return;
 
-      list.push(listener);
+      list[signal].push(listener);
     },
 
     off: function(signal, listener) {
@@ -64,7 +83,7 @@ angular.module('mq-emitter', [])
         return;
 
       var args = Array.prototype.slice.call(arguments, 1);
-      list.forEach(function(listener) {
+      list.concat().forEach(function(listener) {
         listener.apply(null, args);
       });
     }

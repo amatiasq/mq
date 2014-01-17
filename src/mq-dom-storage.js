@@ -26,6 +26,7 @@ angular.module('mq-dom-storage', [])
       this.version = options.version || 0;
       this._cache = Object.create(null);
       checkVersion(this);
+      return this;
     },
 
     hasCached: function(key) {
