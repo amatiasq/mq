@@ -22,7 +22,7 @@ angular.module('mq-dom-storage', [])
 
     init: function(options) {
       this.storage = options.session ? sessionStorage : localStorage;
-      this.prefix = options.prefix || '';
+      this.prefix = options.prefix ? options.prefix + '|' : '';
       this.version = options.version || 0;
       this._cache = Object.create(null);
       checkVersion(this);

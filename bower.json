@@ -1,0 +1,10 @@
+{
+  "name": "mq",
+  "description": "A set of tools based on angular",
+  "version": "0.1.0",
+  "homepage": "https://github.com/amatiasq/mq",
+  "license": "MIT",
+  "authors": [
+    "A. Matías Quezada <amatiasq@gmail.com>"
+  ]
+}
