@@ -1,6 +1,6 @@
 define(function(require) {
   'use strict';
-  var delegate = require('./mq-utils').delegate;
+  var delegate = require('./utils').delegate;
   var iface = [ 'on', 'off', 'once' ];
 
 

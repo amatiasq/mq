@@ -1,7 +1,7 @@
 define(function(require) {
   'use strict';
-  var delegate = require('./mq-utils').delegate;
-  var mqEmitter = require('./mq-emitter');
+  var delegate = require('./utils').delegate;
+  var Emitter = require('./emitter');
   var iface = [ 'on', 'off', 'once', 'when', 'onceWhen' ];
 
 
@@ -25,7 +25,7 @@ define(function(require) {
     },
 
     init: function() {
-      this._emitter = mqEmitter.new();
+      this._emitter = Emitter.new();
       this._history = Object.create(null);
       return this;
     },

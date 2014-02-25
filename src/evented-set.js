@@ -1,8 +1,8 @@
 define(function(require) {
   'use strict';
-  var delegate = require('./mq-utils').delegate;
-  var mqEmitter = require('./mq-emitter');
-  var mqSet = require('./mq-set');
+  var delegate = require('./utils').delegate;
+  var Emitter = require('./emitter');
+  var Set = require('./set');
 
 
   function emitRemove(key) {
@@ -26,8 +26,8 @@ define(function(require) {
     },
 
     init: function(start) {
-      this.emitter = mqEmitter.new();
-      this.set = mqSet.new();
+      this.emitter = Emitter.new();
+      this.set = Set.new();
 
       if (start)
         start.forEach(this.add.bind(this));

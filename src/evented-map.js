@@ -1,8 +1,8 @@
 define(function(require) {
   'use strict';
-  var delegate = require('./mq-utils').delegate;
-  var mqEmitter = require('./mq-emitter');
-  var mqMap = require('./mq-map');
+  var delegate = require('./utils').delegate;
+  var Emitter = require('./emitter');
+  var Map = require('./map');
 
 
   function emitRemove(key) {
@@ -22,8 +22,8 @@ define(function(require) {
     },
 
     init: function(start) {
-      this.map = mqMap.new();
-      this.emitter = mqEmitter.new();
+      this.map = Map.new();
+      this.emitter = Emitter.new();
 
       if (start) {
         Object.keys(start).forEach(function(key) {
