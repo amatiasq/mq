@@ -1,16 +1,9 @@
-/**
- * A collection to store items by key value. Only strings are allowed.
- * It implements emitter so you can listen to changes
- */
+define(function(require) {
+  'use strict';
+  var delegate = require('./mq-utils').delegate;
+  var mqEmitter = require('./mq-emitter');
+  var mqMap = require('./mq-map');
 
-'use strict';
-angular.module('mq-evented-map', [
-  'mq-utils',
-  'mq-map',
-  'mq-emitter',
-])
-
-.factory('mqEventedMap', function(delegate, mqMap, mqEmitter) {
 
   function emitRemove(key) {
     // this is a private method so it can use 'this'
@@ -18,6 +11,11 @@ angular.module('mq-evented-map', [
     this.emitter.emit('remove', key);
   }
 
+
+  /**
+   * A collection to store items by key value. Only strings are allowed.
+   * It implements emitter so you can listen to changes
+   */
   return {
     new: function(start) {
       return Object.create(this).init(start);

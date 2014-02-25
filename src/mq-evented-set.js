@@ -1,16 +1,9 @@
-/**
- * A collection than guarantees not repeated entries. Only strings are allowed.
- * It implements emitter so you can listen to changes
- */
+define(function(require) {
+  'use strict';
+  var delegate = require('./mq-utils').delegate;
+  var mqEmitter = require('./mq-emitter');
+  var mqSet = require('./mq-set');
 
-'use strict';
-angular.module('mq-evented-set', [
-  'mq-utils',
-  'mq-set',
-  'mq-emitter',
-])
-
-.factory('mqEventedSet', function(delegate, mqSet, mqEmitter) {
 
   function emitRemove(key) {
     // this is a private method so it can use 'this'
@@ -18,6 +11,11 @@ angular.module('mq-evented-set', [
     this.emitter.emit('remove', key);
   }
 
+
+  /**
+   * A collection than guarantees not repeated entries. Only strings are allowed.
+   * It implements emitter so you can listen to changes
+   */
   return {
     new: function(start) {
       return Object.create(this).init(start);

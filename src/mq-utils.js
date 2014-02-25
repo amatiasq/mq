@@ -1,12 +1,15 @@
-'use strict';
-angular.module('mq-utils', [])
+define(function() {
+  'use strict';
 
-.factory('delegate', function() {
-  return function delegate(property, method) {
+
+  function delegate(property, method) {
     return function() {
       return this[property][method].apply(this[property], arguments);
     };
-  };
-})
+  }
 
-;
+
+  return {
+    delegate: delegate,
+  };
+});

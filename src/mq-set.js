@@ -1,13 +1,11 @@
-/**
- * A collection than guarantees not repeated entries. Only strings are allowed.
- */
+define(function(require) {
+  'use strict';
+  var delegate = require('./mq-utils').delegate;
 
-'use strict';
-angular.module('mq-set', [
-  'mq-utils',
-])
 
-.factory('mqSet', function(delegate) {
+  /**
+   * A collection than guarantees not repeated entries. Only strings are allowed.
+   */
   return {
     new: function(start) {
       return Object.create(this).init(start);

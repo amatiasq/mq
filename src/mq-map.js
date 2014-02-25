@@ -1,12 +1,6 @@
-/**
- * A collection to store items by key value. Only strings are allowed.
- * It implements emitter so you can listen to changes
- */
+define(function() {
+  'use strict';
 
-'use strict';
-angular.module('mq-map', [])
-
-.factory('mqMap', function() {
 
   function dictDelegate(method) {
     return function(iterator, scope) {
@@ -16,6 +10,11 @@ angular.module('mq-map', [])
     };
   }
 
+
+  /**
+   * A collection to store items by key value. Only strings are allowed.
+   * It implements emitter so you can listen to changes
+   */
   return {
     new: function(start) {
       return Object.create(this).init(start);

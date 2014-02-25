@@ -1,10 +1,11 @@
-'use strict';
-angular.module('mq-timer', [])
+define(function() {
+  'use strict';
 
-.factory('mqTimer', function($timeout) {
+
   return {
     new: function(action, duration, options) {
-      return Object.create(this).init(action, duration, options || {});
+      return Object.create(this)
+        .init(action, duration, options || {});
     },
 
     init: function(action, duration, options) {
@@ -13,6 +14,8 @@ angular.module('mq-timer', [])
       this._tick = this._tick.bind(this);
       this._action = action;
       this._int = null;
+      this._setTimeout = options.setTimeout || setTimeout;
+      this._clearTimeout = options.clearTimeout || clearTimeout;
       return this;
     },
 
@@ -20,14 +23,14 @@ angular.module('mq-timer', [])
       if (this._int)
         return;
 
-      this._int = $timeout(this._tick, this.duration);
+      this._int = this._setTimeout(this._tick, this.duration);
     },
 
     stop: function() {
       if (!this._int)
         return;
 
-      $timeout.cancel(this._int);
+      this._clearTimeout(this._int);
       this._int = null;
     },
 

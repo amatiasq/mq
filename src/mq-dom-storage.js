@@ -1,12 +1,6 @@
-/**
- * A localStorage and sessionStorage wrapper than serializes to / unserializes
- *    from JSON and adds a cache layer and a few useful extra methods.
- */
+define(function() {
+  'use strict';
 
-'use strict';
-angular.module('mq-dom-storage', [])
-
-.factory('mqDomStorage', function() {
 
   function checkVersion(storage) {
     if (storage.get('@@version@@') !== storage.version) {
@@ -15,6 +9,11 @@ angular.module('mq-dom-storage', [])
     }
   }
 
+
+  /**
+   * A localStorage and sessionStorage wrapper than serializes to / unserializes
+   *    from JSON and adds a cache layer and a few useful extra methods.
+   */
   return {
     new: function(options) {
       return Object.create(this).init(options || {});

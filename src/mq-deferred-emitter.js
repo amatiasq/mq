@@ -1,25 +1,22 @@
-/**
- * A signal emitter than allows also to listen to past events using .when()
- * Warning: it stores every emision, be aware of the memory impact this can have
- *   you can flush the memory using .flush([event])` method.
- */
+define(function(require) {
+  'use strict';
+  var delegate = require('./mq-utils').delegate;
+  var mqEmitter = require('./mq-emitter');
+  var iface = [ 'on', 'off', 'once', 'when', 'onceWhen' ];
 
-'use strict';
-angular.module('mq-deferred-emitter', [
-  'mq-utils',
-  'mq-emitter',
-])
 
-.factory('mqDeferredEmitter', function(delegate, mqEmitter) {
+  /**
+   * A signal emitter than allows also to listen to past events using .when()
+   * Warning: it stores every emision, be aware of the memory impact this can have
+   *   you can flush the memory using .flush([event])` method.
+   */
   return {
     implement: function(target) {
       var emitter = this.new();
       target.emitter = emitter;
-      target.on = delegate('emitter', 'on');
-      target.off = delegate('emitter', 'off');
-      target.once = delegate('emitter', 'once');
-      target.when = delegate('emitter', 'when');
-      target.onceWhen = delegate('emitter', 'onceWhen');
+      iface.forEach(function(method) {
+        target[method] = delegate('emitter', method);
+      });
       return target;
     },
 

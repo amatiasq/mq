@@ -1,13 +1,8 @@
-/**
- * A simple signal emitter wrapped into angular
- */
+define(function(require) {
+  'use strict';
+  var delegate = require('./mq-utils').delegate;
+  var iface = [ 'on', 'off', 'once' ];
 
-'use strict';
-angular.module('mq-emitter', [
-  'mq-utils',
-])
-
-.factory('mqEmitter', function(delegate) {
 
   function hasListener(listeners, signal, handler) {
     return listeners[signal] ?
@@ -15,14 +10,18 @@ angular.module('mq-emitter', [
       false;
   }
 
+
+  /**
+   * A simple signal emitter wrapped into angular
+   */
   return {
 
     implement: function(target) {
       var emitter = this.new();
       target.emitter = emitter;
-      target.on = delegate('emitter', 'on');
-      target.off = delegate('emitter', 'off');
-      target.once = delegate('emitter', 'once');
+      iface.forEach(function(method) {
+        target[method] = delegate('emitter', method);
+      });
       return target;
     },
 
@@ -36,9 +35,9 @@ angular.module('mq-emitter', [
     },
 
     bind: function(target) {
-      target.on = this.on.bind(this);
-      target.off = this.off.bind(this);
-      target.once = this.once.bind(this);
+      iface.forEach(function(method) {
+        target[method] = this[method].bind(this);
+      });
       return target;
     },
 
