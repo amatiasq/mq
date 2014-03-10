@@ -37,7 +37,7 @@ define(function(require) {
     bind: function(target) {
       iface.forEach(function(method) {
         target[method] = this[method].bind(this);
-      });
+      }, this);
       return target;
     },
 
@@ -79,12 +79,14 @@ define(function(require) {
     emit: function(signal /*, var_args*/) {
       var list = this._listeners[signal];
       if (!list)
-        return;
+        return false;
 
       var args = Array.prototype.slice.call(arguments, 1);
       list.concat().forEach(function(listener) {
         listener.apply(null, args);
       });
+
+      return list.length !== 0;
     }
   };
 });

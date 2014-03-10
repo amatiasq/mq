@@ -42,7 +42,7 @@ define(function(require) {
         this._history[signal] = [];
 
       this._history[signal].push(args);
-      this._emitter.emit.apply(this._emitter, arguments);
+      return this._emitter.emit.apply(this._emitter, arguments);
     },
 
     when: function(signal, listener) {
@@ -50,21 +50,25 @@ define(function(require) {
       var history = this._history[signal];
 
       if (!history)
-        return;
+        return false;
 
       var invoke = listener.apply.bind(listener, null);
       setTimeout(history.forEach.bind(history, invoke), 0);
+      return true;
     },
 
     onceWhen: function(signal, listener) {
       var history = this._history[signal];
 
-      if (!history)
-        return this._emitter.once(signal, listener);
+      if (!history) {
+        this._emitter.once(signal, listener);
+        return false;
+      }
 
       var lastInvocation = history[history.length - 1];
       var invoke = listener.apply.bind(listener, null, lastInvocation);
       setTimeout(invoke, 0);
+      return true;
     },
 
     flush: function(event) {

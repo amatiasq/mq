@@ -23,14 +23,14 @@ define(function() {
       if (this._int)
         return;
 
-      this._int = this._setTimeout(this._tick, this.duration);
+      this._int = this._setTimeout.call(null, this._tick, this.duration);
     },
 
     stop: function() {
       if (!this._int)
         return;
 
-      this._clearTimeout(this._int);
+      this._clearTimeout.call(null, this._int);
       this._int = null;
     },
 

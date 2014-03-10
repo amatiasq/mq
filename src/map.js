@@ -21,7 +21,7 @@ define(function() {
     },
 
     init: function(start) {
-      this._dictionary = Object.create(null);
+      this._dictionary = {};
 
       if (start)
         angular.extend(this._dictionary, start);
@@ -30,7 +30,7 @@ define(function() {
     },
 
     has: function(key) {
-      return key in this._dictionary;
+      return this._dictionary.hasOwnProperty(key);
     },
 
     get: function(key) {
@@ -58,7 +58,7 @@ define(function() {
 
     clear: function() {
       var dict = this._dictionary;
-      this._dictionary = Object.create(null);
+      this._dictionary = {};
       return dict;
     },
 
@@ -80,7 +80,7 @@ define(function() {
     every: dictDelegate('every'),
 
     map: function(iterator, scope) {
-      var result = Object.create(null);
+      var result = {};
       this.forEach(function(value, key, self) {
         result[key] = iterator.call(scope, value, key, self);
       });
@@ -88,7 +88,7 @@ define(function() {
     },
 
     filter: function(iterator, scope) {
-      var result = Object.create(null);
+      var result = {};
       this.forEach(function(value, key, self) {
         if (iterator.call(scope, value, key, self))
           result[key] = value;
@@ -101,6 +101,21 @@ define(function() {
         initial = iterator(initial, value, key, self);
       });
       return initial;
+    },
+
+    find: function(iterator) {
+      var index = -1;
+      var dict = this._dictionary;
+      var keys = this.keys();
+
+      keys.some(function(key, i) {
+        if (iterator(dict[key])) {
+          index = i;
+          return true;
+        }
+      });
+
+      return index === -1 ? null : dict[keys[index]];
     },
   };
 });
